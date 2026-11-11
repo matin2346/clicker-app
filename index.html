@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    تلگرام مینی اپ - بازی کلیکی</title>
+    <!-- اضافه کردن کتابخانه تلگرام -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: var(--tg-theme-bg-color, #1f2125);
+            color: var(--tg-theme-text-color, #ffffff);
+            font-family: Tahoma, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h2 {
+            margin-bottom: 5px;
+        }
+        #score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #f3ba2f;
+            margin: 20px 0;
+        }
+        .coin-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.1s ease;
+        }
+        .coin-btn img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(243, 186, 47, 0.4);
+        }
+        .coin-btn:active {
+            transform: scale(0.90);
+        }
+        #user-info {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #8c939e;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="greeting">سلام، کاربر عزیز!</h2>
+    <p>روی سکه بزن و امتیاز جمع کن:</p>
+
+    <div id="score">0</div>
+
+    <!-- دکمه سکه (می‌توانید لینک عکس دلخواه خود را جایگزین کنید) -->
+    <button class="coin-btn" onclick="incrementScore()">
+        <img src="https://cryptologos.logos/logos/toncoin-ton-logo.png" alt="Coin">
+    </button>
+
+    <div id="user-info">در حال اتصال به تلگرام...</div>
+
+    <script>
+        // راه‌اندازی وب اپ تلگرام
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // بزرگ کردن پنجره به صورت تمام صفحه
+
+        let score = 0;
+
+        // گرفتن اطلاعات کاربر از تلگرام
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            let user = tg.initDataUnsafe.user;
+            document.getElementById('greeting').innerText = `سلام، ${user.first_name}!`;
+            document.getElementById('user-info').innerText = `شناسه شما: ${user.id}`;
+        }
+
+        // تابع افزایش امتیاز هنگام کلیک
+        function incrementScore() {
+            score += 1;
+            document.getElementById('score').innerText = score;
+            
+            // لرزش کوچک گوشی هنگام کلیک (اگر دستگاه پشتیبانی کند)
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        }
+    </script>
+
+</body>
+</html>
